@@ -1,23 +1,21 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from 'redux/phonebook/phonebookSlice';
+import { getFilter } from 'redux/selectors';
 
-class Filter extends Component {
-  static propTypes = {
-    filter: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+const Filter = () => {
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+  const handleOnChange = ({ currentTarget }) => {
+    dispatch(setFilter(currentTarget.value));
   };
-  handleOnChange = ({ currentTarget }) => {
-    const value = currentTarget.value;
-    this.props.onChange(value);
-  };
-  render() {
-    return (
-      <>
-        <h3>Find contacts by name</h3>
-        <input value={this.props.filter} onChange={this.handleOnChange}></input>
-      </>
-    );
-  }
-}
+
+  return (
+    <>
+      <h3>Find contacts by name</h3>
+      <input value={filter} onChange={handleOnChange}></input>
+    </>
+  );
+};
 
 export default Filter;

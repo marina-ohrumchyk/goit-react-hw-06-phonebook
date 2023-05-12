@@ -1,29 +1,22 @@
-import { Component } from 'react';
-import { List } from 'components/ContactList/ContactList.styled';
+import React from 'react';
+import { getFilteredContacts } from 'redux/selectors';
+import { List } from './ContactList.styled';
 import ContactListItem from 'components/ContactListItem/ContactListItem';
-import PropTypes from 'prop-types';
 
-class ContactsList extends Component {
-  static propTypes = {
-    contacts: PropTypes.arrayOf(
-      PropTypes.shape({ id: PropTypes.string.isRequired })
-    ),
-    onDelete: PropTypes.func.isRequired,
-  };
-  render() {
-    const { contacts } = this.props;
-    return (
+import { useSelector } from 'react-redux';
+
+const ContactsList = () => {
+  const contacts = useSelector(getFilteredContacts);
+
+  return (
+    contacts.length !== 0 && (
       <List>
         {contacts.map(contact => (
-          <ContactListItem
-            key={contact.id}
-            contact={contact}
-            onDelete={() => this.props.onDelete(contact.id)}
-          />
+          <ContactListItem key={contact.id} contact={contact} />
         ))}
       </List>
-    );
-  }
-}
+    )
+  );
+};
 
 export default ContactsList;
